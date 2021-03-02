@@ -179,13 +179,13 @@ class Client{
             const entity = this.entities[i];
 
             if (entity.entity_id === this.entity_id){
-                return ;// We don't interpolate this client
+                continue ;// We don't interpolate this client
             }
             //Find two authorative position surrounding the rendering timestep
-            const buffer = this.position_buffer;
+            const buffer = entity.position_buffer;
 
             //Drop older position
-            while(buffer.length >= 2 && buffer[1][0] < render_timestamp){
+            while(buffer.length >= 2 && buffer[1][0] <= render_timestamp){
                 buffer.shift();
             }
             if (buffer.length >= 2 && buffer[0][0] <= render_timestamp && render_timestamp <= buffer[1][0]){
@@ -332,7 +332,7 @@ const updatePlayerParameters = (client, prefix) => {
     }
 
     client.client_side_prediction = cb_prediction.checked;
-    client.server_reconciliation = cb_reconciliation;
+    client.server_reconciliation = cb_reconciliation.checked;
 
     client.entity_interpolation = element(prefix + '_interpolation').checked;
 }
